@@ -31,27 +31,26 @@ A fully-configured Kali Linux ISO with **i3wm**, **Gruvbox** dark theme, **termI
 - **Firmware**: Exclude `firmware-nexmon` if it fails
 
 
-## How to Build
+## Troubleshooting
+
+### Build fails on `firmware-nexmon` or `intel-microcode`
+These packages sometimes fail to install in chroot. You can exclude them by creating a preference file:
 
 ```bash
-# 1. Copy this directory to your build machine
-cp -r kali-iso-config /path/to/build/
-
-# 2. Enter the directory
-cd /path/to/build/kali-iso-config
-
-# 3. Make auto/config executable
-chmod +x auto/config
-
-# 4. Configure
-sudo lb config
-
-# 5. Build (this takes a while — 30-90 minutes)
-# Note: We force IPv4 for wget to avoid IPv6 timeouts on some networks
-echo "inet4_only = on" > wgetrc-ipv4
-sudo lb config
-sudo WGETRC=$PWD/wgetrc-ipv4 lb build
+echo -e "Package: firmware-nexmon\nPin: release *\nPin-Priority: -1\n\nPackage: intel-microcode\nPin: release *\nPin-Priority: -1" | sudo tee config/archives/exclude-problematic.pref.chroot
 ```
+
+### "No space left on device"
+If your VM runs out of space, try switching `config/package-lists/custom.list.chroot` to use `kali-linux-core` instead of `kali-linux-default`.
+## How to Build
+
+The easiest way is to use the provided script, which handles dependencies, cleanup, and configuration automatically:
+
+```bash
+sudo ./build.sh
+```
+
+Alternatively, run manually:
 
 The resulting ISO will appear as `live-image-amd64.hybrid.iso` in the current directory.
 
