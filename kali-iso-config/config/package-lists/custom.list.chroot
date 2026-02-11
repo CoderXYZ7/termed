@@ -1,5 +1,8 @@
-# Base Kali
-kali-linux-default
+# Base Kali (Minimal)
+kali-linux-core
+kali-linux-firmware
+kali-defaults
+kali-menu
 
 # i3 Window Manager
 i3-wm
