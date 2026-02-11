@@ -1,0 +1,81 @@
+#!/bin/sh
+set -e
+
+echo "[*] Installing Zen Browser..."
+
+REPO="zen-browser/desktop"
+INSTALL_DIR="/opt/zen-browser"
+DESKTOP_FILE="/usr/share/applications/zen-browser.desktop"
+
+# Get latest release download URL for the generic linux build
+DOWNLOAD_URL=$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" \
+    | grep '"browser_download_url"' \
+    | grep -i 'zen\.linux-x86_64\.tar\.xz\|zen-x86_64\.AppImage\|zen\.linux-specific\.tar\.bz2' \
+    | head -1 \
+    | sed -E 's/.*"(https[^"]+)".*/\1/')
+
+# Fallback: try the generic tarball pattern
+if [ -z "$DOWNLOAD_URL" ]; then
+    DOWNLOAD_URL=$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" \
+        | grep '"browser_download_url"' \
+        | grep -i '\.tar\.\|\.AppImage' \
+        | grep -iv 'aarch64\|arm' \
+        | head -1 \
+        | sed -E 's/.*"(https[^"]+)".*/\1/')
+fi
+
+if [ -z "$DOWNLOAD_URL" ]; then
+    echo "[!] Could not find Zen Browser download URL, skipping."
+    exit 0
+fi
+
+echo "[*] Downloading Zen Browser from $DOWNLOAD_URL"
+
+mkdir -p "$INSTALL_DIR"
+TMP_DIR=$(mktemp -d)
+
+case "$DOWNLOAD_URL" in
+    *.tar.xz)
+        curl -fsSL "$DOWNLOAD_URL" | tar xJ -C "$TMP_DIR"
+        cp -r "$TMP_DIR"/*/* "$INSTALL_DIR/" 2>/dev/null || cp -r "$TMP_DIR"/* "$INSTALL_DIR/"
+        ;;
+    *.tar.bz2)
+        curl -fsSL "$DOWNLOAD_URL" | tar xj -C "$TMP_DIR"
+        cp -r "$TMP_DIR"/*/* "$INSTALL_DIR/" 2>/dev/null || cp -r "$TMP_DIR"/* "$INSTALL_DIR/"
+        ;;
+    *.AppImage)
+        curl -fsSL "$DOWNLOAD_URL" -o "$INSTALL_DIR/zen-browser.AppImage"
+        chmod +x "$INSTALL_DIR/zen-browser.AppImage"
+        ;;
+    *)
+        curl -fsSL "$DOWNLOAD_URL" -o "$TMP_DIR/zen-browser"
+        install -m 755 "$TMP_DIR/zen-browser" "$INSTALL_DIR/"
+        ;;
+esac
+
+rm -rf "$TMP_DIR"
+
+# Create a symlink for easy CLI access
+if [ -f "$INSTALL_DIR/zen" ]; then
+    ln -sf "$INSTALL_DIR/zen" /usr/local/bin/zen-browser
+elif [ -f "$INSTALL_DIR/zen-browser" ]; then
+    ln -sf "$INSTALL_DIR/zen-browser" /usr/local/bin/zen-browser
+elif [ -f "$INSTALL_DIR/zen-browser.AppImage" ]; then
+    ln -sf "$INSTALL_DIR/zen-browser.AppImage" /usr/local/bin/zen-browser
+fi
+
+# Create .desktop file
+cat > "$DESKTOP_FILE" << 'EOF'
+[Desktop Entry]
+Name=Zen Browser
+Comment=Privacy-focused web browser
+Exec=/usr/local/bin/zen-browser %u
+Icon=/opt/zen-browser/browser/chrome/icons/default/default128.png
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;
+StartupNotify=true
+EOF
+
+echo "[+] Zen Browser installed to $INSTALL_DIR"

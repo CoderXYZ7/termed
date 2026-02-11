@@ -1,0 +1,38 @@
+# Base Kali
+kali-linux-default
+
+# i3 Window Manager
+i3-wm
+i3status
+i3lock
+i3blocks
+
+# Terminal
+kitty
+
+# Application Launcher
+rofi
+
+# Utilities
+suckless-tools
+feh
+picom
+dunst
+brightnessctl
+pulseaudio
+pavucontrol
+network-manager-gnome
+thunar
+lxappearance
+arandr
+
+# Development / CLI
+neovim
+git
+curl
+wget
+unzip
+fontconfig
+jq
+fzf
+zsh

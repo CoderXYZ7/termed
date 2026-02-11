@@ -1,0 +1,28 @@
+#!/bin/sh
+
+lb config noauto \
+    --distribution kali-rolling \
+    --archive-areas "main contrib non-free non-free-firmware" \
+    --mirror-bootstrap "https://kali.download/kali" \
+    --mirror-chroot "https://kali.download/kali" \
+    --mirror-chroot-security "https://kali.download/kali" \
+    --mirror-binary "https://kali.download/kali" \
+    --mirror-binary-security "https://kali.download/kali" \
+    --mirror-debian-installer "https://kali.download/kali" \
+    --parent-mirror-bootstrap "https://kali.download/kali" \
+    --parent-mirror-chroot "https://kali.download/kali" \
+    --parent-mirror-chroot-security "https://kali.download/kali" \
+    --parent-mirror-binary "https://kali.download/kali" \
+    --parent-mirror-binary-security "https://kali.download/kali" \
+    --parent-mirror-debian-installer "https://kali.download/kali" \
+    --keyring-packages kali-archive-keyring \
+    --debian-installer live \
+    --debian-installer-gui true \
+    --debootstrap-options "--include=apt-transport-https,ca-certificates,kali-archive-keyring --keyring=/usr/share/keyrings/kali-archive-keyring.gpg" \
+    --iso-application "Kali Custom i3 Gruvbox" \
+    --iso-volume "KALI-CUSTOM" \
+    --linux-flavours amd64 \
+    --security false \
+    --updates false \
+    --apt-indices false \
+    "${@}"

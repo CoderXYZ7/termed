@@ -1,0 +1,61 @@
+#!/bin/sh
+set -e
+
+echo "[*] Installing Oh My Zsh and plugins..."
+
+# Install Oh My Zsh to /etc/skel so every new user gets it
+export HOME="/etc/skel"
+export CHSH="no"
+export RUNZSH="no"
+export KEEP_ZSHRC="yes"
+
+# Download and install OMZ
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
+
+# ── Plugins ─────────────────────────────────────────────────
+
+# zsh-autosuggestions — fish-like suggestions as you type
+echo "[*] Installing zsh-autosuggestions..."
+git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git \
+    "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+
+# zsh-syntax-highlighting — real-time command highlighting
+echo "[*] Installing zsh-syntax-highlighting..."
+git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git \
+    "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+
+# zsh-completions — additional completion definitions
+echo "[*] Installing zsh-completions..."
+git clone --depth=1 https://github.com/zsh-users/zsh-completions.git \
+    "$ZSH_CUSTOM/plugins/zsh-completions"
+
+# zsh-history-substring-search — type partial command then Up/Down to search
+echo "[*] Installing zsh-history-substring-search..."
+git clone --depth=1 https://github.com/zsh-users/zsh-history-substring-search.git \
+    "$ZSH_CUSTOM/plugins/zsh-history-substring-search"
+
+# fast-syntax-highlighting — faster, better highlighting (alternative/complement)
+echo "[*] Installing fast-syntax-highlighting..."
+git clone --depth=1 https://github.com/zdharma-continuum/fast-syntax-highlighting.git \
+    "$ZSH_CUSTOM/plugins/fast-syntax-highlighting"
+
+# you-should-use — reminds you of aliases you have defined
+echo "[*] Installing you-should-use..."
+git clone --depth=1 https://github.com/MichaelAqworthy/you-should-use.git \
+    "$ZSH_CUSTOM/plugins/you-should-use"
+
+# fzf-tab — replace zsh default completion with fzf
+echo "[*] Installing fzf-tab..."
+git clone --depth=1 https://github.com/Aloxaf/fzf-tab.git \
+    "$ZSH_CUSTOM/plugins/fzf-tab"
+
+# ── Theme ───────────────────────────────────────────────────
+
+# Powerlevel10k — the best prompt theme
+echo "[*] Installing Powerlevel10k theme..."
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+    "$ZSH_CUSTOM/themes/powerlevel10k"
+
+echo "[+] Oh My Zsh + all plugins + Powerlevel10k installed to /etc/skel"

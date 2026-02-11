@@ -1,0 +1,41 @@
+#!/bin/sh
+set -e
+
+echo "[*] Installing termIDE..."
+
+REPO="termide/termide"
+INSTALL_DIR="/usr/local/bin"
+
+# Get latest version tag
+VERSION=$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" \
+    | grep '"tag_name"' \
+    | sed -E 's/.*"v?([^"]+)".*/\1/')
+
+if [ -z "$VERSION" ]; then
+    echo "[!] Failed to get latest termIDE version, skipping."
+    exit 0
+fi
+
+echo "[*] termIDE version: $VERSION"
+
+# Detect architecture
+ARCH=$(uname -m)
+case "$ARCH" in
+    x86_64|amd64) ARCH="x86_64" ;;
+    aarch64|arm64) ARCH="aarch64" ;;
+    *)
+        echo "[!] Unsupported architecture: $ARCH, skipping termIDE."
+        exit 0
+        ;;
+esac
+
+TARGET="${ARCH}-unknown-linux-gnu"
+URL="https://github.com/$REPO/releases/download/${VERSION}/termide-${VERSION}-${TARGET}.tar.gz"
+
+echo "[*] Downloading from $URL"
+TMP_DIR=$(mktemp -d)
+curl -fsSL "$URL" | tar xz -C "$TMP_DIR"
+install -m 755 "$TMP_DIR/termide" "$INSTALL_DIR/"
+rm -rf "$TMP_DIR"
+
+echo "[+] termIDE installed to $INSTALL_DIR/termide"

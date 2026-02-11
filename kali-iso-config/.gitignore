@@ -1,0 +1,31 @@
+# Live-build generated files
+.build/
+binary/
+chroot/
+config/binary
+config/bootstrap
+config/chroot
+config/common
+config/source
+source/
+local/
+
+# ISO output
+*.iso
+*.img
+*.list
+*.packages
+*.contents
+*.zsync
+*.md5sum
+*.sha1sum
+*.sha256sum
+*.sha512sum
+*.hybrid.iso
+*.buildlog
+
+# Cache
+cache/
+
+# Local customizations
+wgetrc-ipv4

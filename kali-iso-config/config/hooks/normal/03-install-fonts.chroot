@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+echo "[*] Installing Departure Mono Nerd Font..."
+
+FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/DepartureMono.zip"
+FONT_DIR="/usr/share/fonts/opentype/departure-mono"
+
+mkdir -p "$FONT_DIR"
+TMP_DIR=$(mktemp -d)
+
+curl -fsSL "$FONT_URL" -o "$TMP_DIR/DepartureMono.zip"
+unzip -o "$TMP_DIR/DepartureMono.zip" -d "$FONT_DIR"
+rm -rf "$TMP_DIR"
+
+# Update font cache
+fc-cache -fv
+
+echo "[+] Departure Mono Nerd Font installed to $FONT_DIR"
