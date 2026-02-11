@@ -49,6 +49,7 @@ lb config
 
 # 4. Build
 echo -e "${GREEN}[*] Starting build (this will take time)...${NC}"
-lb build
+lb build 2>&1 | tee build.log
 
 echo -e "${GREEN}[+] Build Complete! ISO should be in the current directory.${NC}"
+echo -e "${GREEN}[+] Build log saved to: build.log${NC}"

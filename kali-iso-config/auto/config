@@ -3,18 +3,18 @@
 lb config noauto \
     --distribution kali-rolling \
     --archive-areas "main contrib non-free non-free-firmware" \
-    --mirror-bootstrap "https://kali.download/kali" \
-    --mirror-chroot "https://kali.download/kali" \
-    --mirror-chroot-security "https://kali.download/kali" \
-    --mirror-binary "https://kali.download/kali" \
-    --mirror-binary-security "https://kali.download/kali" \
-    --mirror-debian-installer "https://kali.download/kali" \
-    --parent-mirror-bootstrap "https://kali.download/kali" \
-    --parent-mirror-chroot "https://kali.download/kali" \
-    --parent-mirror-chroot-security "https://kali.download/kali" \
-    --parent-mirror-binary "https://kali.download/kali" \
-    --parent-mirror-binary-security "https://kali.download/kali" \
-    --parent-mirror-debian-installer "https://kali.download/kali" \
+    --mirror-bootstrap "http://http.kali.org/kali" \
+    --mirror-chroot "http://http.kali.org/kali" \
+    --mirror-chroot-security "http://http.kali.org/kali" \
+    --mirror-binary "http://http.kali.org/kali" \
+    --mirror-binary-security "http://http.kali.org/kali" \
+    --mirror-debian-installer "http://http.kali.org/kali" \
+    --parent-mirror-bootstrap "http://http.kali.org/kali" \
+    --parent-mirror-chroot "http://http.kali.org/kali" \
+    --parent-mirror-chroot-security "http://http.kali.org/kali" \
+    --parent-mirror-binary "http://http.kali.org/kali" \
+    --parent-mirror-binary-security "http://http.kali.org/kali" \
+    --parent-mirror-debian-installer "http://http.kali.org/kali" \
     --keyring-packages kali-archive-keyring \
     --debian-installer live \
     --debian-installer-gui true \
